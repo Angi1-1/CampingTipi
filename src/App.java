@@ -1,5 +1,7 @@
 import java.time.LocalDate;
 import java.util.*;
+
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -36,7 +38,7 @@ public class App extends Application {
         TextField respuestadoc;
         DatePicker respuestafecha;
         ComboBox<String> respuestaSexo;
-
+       
         public DatosPasajero(TextField respuestanombre, TextField respuestadoc, DatePicker respuestafecha, ComboBox<String> respuestaSexo) {
             this.respuestanombre = respuestanombre;
             this.respuestadoc = respuestadoc;
@@ -233,7 +235,7 @@ public class App extends Application {
     }
 
     public void informacion(Stage segundoStage, datosApartamentos.Apartamento apt, LocalDate fechaLlegadaSeleccionada, LocalDate fechaSalidaSeleccionada, String personaSeleccionada) {
-        List<DatosPasajero> datosPasajeros = new ArrayList<>();
+        List<Reserva.Pasajero> datosPasajeros = new ArrayList<>();
         System.out.println("Se seleccionó el apartamento: " + apt.getNombreApartamento());
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(20));
@@ -428,9 +430,9 @@ public class App extends Application {
             divInputSexo.getChildren().addAll(sexo, respuestaSexo);
             contenedorPasajero.getChildren().addAll(tituloDatos, divInputNombre, divInputDocumentos, divInputFechaNacimiento, divInputSexo);
             contenidosDatosUsuario.getChildren().addAll(contenedorPasajero, Siguiente);
-
+            LocalDate fechaNacimientoDate = respuestafecha.getValue();
             //guardar los datos 
-            datosPasajeros.add(new DatosPasajero(respuestanombre, respuestadoc, respuestafecha, respuestaSexo));
+            datosPasajeros.add(new Reserva.Pasajero(respuestanombre.getText(), respuestadoc.getText(), fechaNacimientoDate.toString(), respuestaSexo.getValue()));
         }        
         
         //Eventos de pagina 
@@ -444,14 +446,14 @@ public class App extends Application {
             System.out.println("Datos ingresados por el usuario:");
             for (int i = 0; i < Integer.parseInt(partes[0]); i++) {
                 // Obtener los datos de cada pasajero desde la lista de campos
-                DatosPasajero datos = datosPasajeros.get(i);
+                Reserva.Pasajero datos = datosPasajeros.get(i);
              
                 // Imprimir los datos del pasajero
                 System.out.println("Pasajero " + (i + 1) + ":");
-                System.out.println("  Nombre: " + datos.respuestanombre.getText());
-                System.out.println("  Documento: " + datos.respuestadoc.getText());
-                System.out.println("  Fecha de Nacimiento: " + datos.respuestafecha.getValue().toString());
-                System.out.println("  Sexo: " + datos.respuestaSexo.getValue());
+                System.out.println("  Nombre: " + datos.getNombre());
+                System.out.println("  Documento: " + datos.getDocumento());
+                System.out.println("  Fecha de Nacimiento: " + datos.getFechaNacimiento());
+                System.out.println("  Sexo: " + datos.getSexo());
                 VBox contenedorPasajero = new VBox(20);
                 // Título del pasajero
                 Label tituloDatos = new Label("Datos de Pasajero " + (i + 1));
@@ -462,7 +464,7 @@ public class App extends Application {
                 Label nombre = new Label("Nombre y Apellido");
                 nombre.setPrefWidth(254);
                 nombre.setFont(Font.loadFont(Tinos, 22));
-                Label respuestanombre = new Label(datos.respuestanombre.getText());
+                Label respuestanombre = new Label(datos.getNombre());
                 respuestanombre.setFont(Font.loadFont(Tinos, 22));
                 divInputNombre.getChildren().addAll(nombre, respuestanombre);
             
@@ -471,7 +473,7 @@ public class App extends Application {
                 Label documentos = new Label("Documento de Identidad");
                 documentos.setPrefWidth(254);
                 documentos.setFont(Font.loadFont(Tinos, 22));
-                Label respuestadoc = new Label(datos.respuestadoc.getText());
+                Label respuestadoc = new Label(datos.getDocumento());
                 respuestadoc.setFont(Font.loadFont(Tinos, 22));
                 divInputDocumentos.getChildren().addAll(documentos, respuestadoc);
             
@@ -480,7 +482,7 @@ public class App extends Application {
                 Label fechaNac = new Label("Fecha de Nacimiento");
                 fechaNac.setPrefWidth(254); // Cambié `fecha` a `fechaNac` para evitar error
                 fechaNac.setFont(Font.loadFont(Tinos, 22));
-                Label respuestafecha = new Label(datos.respuestafecha.getValue().toString());
+                Label respuestafecha = new Label(datos.getFechaNacimiento());
                 respuestafecha.setPrefWidth(333);
                 respuestafecha.setPrefHeight(22);
                 respuestafecha.setStyle("-fx-font-size: 22px; -fx-font-family: Tinos;");
@@ -491,7 +493,7 @@ public class App extends Application {
                 Label sexo = new Label("Sexo");
                 sexo.setPrefWidth(254);
                 sexo.setFont(Font.loadFont(Tinos, 22));
-                Label respuestaSexo = new Label(datos.respuestaSexo.getValue());
+                Label respuestaSexo = new Label(datos.getSexo());
                 respuestaSexo.setFont(Font.loadFont(Tinos, 22));
                 divInputSexo.getChildren().addAll(sexo, respuestaSexo);
                 contenedorPasajero.getChildren().addAll(tituloDatos, divInputNombre, divInputDocumentos, divInputFechaNacimiento, divInputSexo);
@@ -635,7 +637,7 @@ public class App extends Application {
                 contenidosDatosUsuario.getChildren().addAll(contenedorPasajero, Siguiente);
     
                 //guardar los datos 
-                datosPasajeros.add(new DatosPasajero(respuestanombre, respuestadoc, respuestafecha, respuestaSexo));
+                // datosPasajeros.add(new DatosPasajero(respuestanombre, respuestadoc, respuestafecha, respuestaSexo));
             }        
         });
         
@@ -648,16 +650,16 @@ public class App extends Application {
             // Imprimir los datos de los pasajeros
             System.out.println("Datos ingresados por el usuario:");
             for (int i = 0; i < datosPasajeros.size(); i++) {
-                DatosPasajero datos = datosPasajeros.get(i);
+                Reserva.Pasajero datos = datosPasajeros.get(i);
         
                 // Mostrar los datos del pasajero en la consola
                 System.out.println("Pasajero " + (i + 1) + ":");
-                System.out.println("  Nombre: " + datos.respuestanombre.getText());
-                System.out.println("  Documento: " + datos.respuestadoc.getText());
+                System.out.println("  Nombre: " + datos.getNombre());
+                System.out.println("  Documento: " + datos.getDocumento());
                 System.out.println("  Fecha de Nacimiento: " + 
-                    (datos.respuestafecha.getValue() != null ? datos.respuestafecha.getValue().toString() : "No seleccionada"));
+                    (datos.getFechaNacimiento() != null ? datos.getFechaNacimiento() : "No seleccionada"));
                 System.out.println("  Sexo: " + 
-                    (datos.respuestaSexo.getValue() != null ? datos.respuestaSexo.getValue() : "No seleccionado"));
+                    (datos.getSexo() != null ? datos.getSexo() : "No seleccionado"));
         
                 // Mostrar los datos visualmente en el contenedor
                 VBox contenedorPasajero = new VBox(20);
@@ -669,7 +671,7 @@ public class App extends Application {
                 Label nombre = new Label("Nombre y Apellido");
                 nombre.setPrefWidth(254);
                 nombre.setFont(Font.loadFont(Tinos, 22));
-                Label respuestanombre = new Label(datos.respuestanombre.getText());
+                Label respuestanombre = new Label(datos.getNombre());
                 respuestanombre.setFont(Font.loadFont(Tinos, 22));
                 divInputNombre.getChildren().addAll(nombre, respuestanombre);
         
@@ -677,7 +679,7 @@ public class App extends Application {
                 Label documentos = new Label("Documento de Identidad");
                 documentos.setPrefWidth(254);
                 documentos.setFont(Font.loadFont(Tinos, 22));
-                Label respuestadoc = new Label(datos.respuestadoc.getText());
+                Label respuestadoc = new Label(datos.getDocumento());
                 respuestadoc.setFont(Font.loadFont(Tinos, 22));
                 divInputDocumentos.getChildren().addAll(documentos, respuestadoc);
         
@@ -686,7 +688,7 @@ public class App extends Application {
                 fechaNac.setPrefWidth(254);
                 fechaNac.setFont(Font.loadFont(Tinos, 22));
                 Label respuestafecha = new Label(
-                    datos.respuestafecha.getValue() != null ? datos.respuestafecha.getValue().toString() : "No seleccionada"
+                    datos.getFechaNacimiento() != null ? datos.getFechaNacimiento(): "No seleccionada"
                 );
                 respuestafecha.setFont(Font.loadFont(Tinos, 22));
                 divInputFechaNacimiento.getChildren().addAll(fechaNac, respuestafecha);
@@ -695,7 +697,7 @@ public class App extends Application {
                 Label sexo = new Label("Sexo");
                 sexo.setPrefWidth(254);
                 sexo.setFont(Font.loadFont(Tinos, 22));
-                Label respuestaSexo = new Label(datos.respuestaSexo.getValue() != null ? datos.respuestaSexo.getValue() : "No seleccionado");
+                Label respuestaSexo = new Label(datos.getSexo() != null ? datos.getSexo() : "No seleccionado");
                 respuestaSexo.setFont(Font.loadFont(Tinos, 22));
                 divInputSexo.getChildren().addAll(sexo, respuestaSexo);
         
@@ -736,9 +738,16 @@ public class App extends Application {
             contenidosDatosUsuario.getChildren().clear();
             Button downloandPDFButton = new Button("DESCARGAR PDF");
             downloandPDFButton.setStyle(botoString);
+            downloandPDFButton.setAlignment(Pos.CENTER);
             contenidosDatosUsuario.getChildren().addAll(downloandPDFButton);
             Reserva reservaFinalizada = new Reserva(userId, datosPasajeros, matriculas, apt.getIdapartamento(), notasReservas);
             System.out.println("Reserva creada con todos los datos: " + reservaFinalizada);
+            downloandPDFButton.setOnAction(e -> {
+                
+                DescargaPDF pdfDescargaPDF = new DescargaPDF();
+                pdfDescargaPDF.generarPDF("reserva" + userId + ".pdf", reservaFinalizada);
+                
+            });
         });
         rightSection.getChildren().addAll(reservaTitulo,divInputFecha,divInputPasajero,divInputPrecio, contenidosDatosUsuario); 
         HBox contenidoRellenar = new HBox(10);

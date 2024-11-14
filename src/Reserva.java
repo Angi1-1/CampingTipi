@@ -2,12 +2,12 @@ import java.util.List;
 
 public class Reserva {
     private int id;
-    private List<App.DatosPasajero> pasajeros;
+    private List<Pasajero> pasajeros;
     private List<String> matriculas;
     private int apartamento;
     private String nota;
 
-    public Reserva(int id, List<App.DatosPasajero> pasajeros, List<String> matriculas, int apartamento,String nota ){
+    public Reserva(int id, List<Pasajero> pasajeros, List<String> matriculas, int apartamento,String nota ){
         this.id = id;
         this.pasajeros = pasajeros;
         this.matriculas = matriculas;
@@ -24,11 +24,11 @@ public class Reserva {
         this.id = id;
     }
 
-    public List<App.DatosPasajero> getPasajeros() {
+    public List<Pasajero> getPasajeros() {
         return pasajeros;
     }
 
-    public void setPasajeros(List<App.DatosPasajero> pasajeros) {
+    public void setPasajeros(List<Pasajero> pasajeros) {
         this.pasajeros = pasajeros;
     }
 
@@ -56,50 +56,51 @@ public class Reserva {
         this.nota = nota;
     }
 
-    //  public static class Pasajero {
-    //     private String nombre;
-    //     private String documento;
-    //     private String fechaNacimiento;
-    //     private String sexo;
+     public static class Pasajero {
+        private String nombre;
+        private String documento;
+        private String fechaNacimiento;
+        private String sexo;
 
-    //     public Pasajero(String nombre, String documento, String fechaNacimiento, String sexo) {
-    //         this.nombre = nombre;
-    //         this.documento = documento;
-    //         this.fechaNacimiento = fechaNacimiento;
-    //         this.sexo = sexo;
-    //     }
+        public Pasajero(String nombre, String documento, String fechaNacimiento, String sexo) {
+            this.nombre = nombre;
+            this.documento = documento;
+            this.fechaNacimiento = fechaNacimiento;
+            this.sexo = sexo;
+        }
 
-    //     // Getters y setters
-    //     public String getNombre() {
-    //         return nombre;
-    //     }
+        // Getters y setters
+        public String getNombre() {
+            return nombre;
+        }
 
-    //     public void setNombre(String nombre) {
-    //         this.nombre = nombre;
-    //     }
+        public void setNombre(String nombre) {
+            this.nombre = nombre;
+        }
 
-    //     public String getDocumento() {
-    //         return documento;
-    //     }
+        public String getDocumento() {
+            return documento;
+        }
 
-    //     public void setDocumento(String documento) {
-    //         this.documento = documento;
-    //     }
+        public void setDocumento(String documento) {
+            this.documento = documento;
+        }
 
-    //     public String getFechaNacimiento() {
-    //         return fechaNacimiento;
-    //     }
+        public String getFechaNacimiento() {
 
-    //     public void setFechaNacimiento(String fechaNacimiento) {
-    //         this.fechaNacimiento = fechaNacimiento;
-    //     }
+            return fechaNacimiento;
+        }
 
-    //     public String getSexo() {
-    //         return sexo;
-    //     }
+        public void setFechaNacimiento(String fechaNacimiento) {
+            this.fechaNacimiento = fechaNacimiento;
+        }
 
-    //     public void setSexo(String sexo) {
-    //         this.sexo = sexo;
-    //     }
-    // }
+        public String getSexo() {
+            return sexo;
+        }
+
+        public void setSexo(String sexo) {
+            this.sexo = sexo;
+        }
+    }
 }
