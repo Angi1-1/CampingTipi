@@ -1,0 +1,27 @@
+# Ignorar directorios del sistema
+Configuración local/
+Cookies/
+Datos de programa/
+Entorno de red/
+Impresoras/
+Menú Inicio/
+Mis documentos/
+Plantillas/
+Reciente/
+SendTo/
+
+# Ignorar archivos y directorios no relacionados
+../../../
+../../
+../../../AppData/
+../../../eclipse/
+../../../npm-cache/
+../../../Videos/
+
+# Ignorar binarios y compilados
+*.class
+bin/
+
+# Ignorar configuraciones de IDE
+.vscode/
+.idea/
