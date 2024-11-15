@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -22,6 +23,7 @@ import javafx.stage.Stage;
 public class App extends Application {
     String Tinos ="file:src/fonts/Tinos/Tinos-Regular.ttf";
     String GideonRoman ="file:src/fonts/Gideon_Roman/GideonRoman-Regular.ttf";
+    private TextArea notaArea;
     private Integer userId = 1;
     // Servicios que ofecemos
     private Map<String, String> createServicio(String nombre, String imagenUrl) {
@@ -48,7 +50,9 @@ public class App extends Application {
     }
 
     List<String> matriculas = new ArrayList<>(); // Lista para guardar matrículas
+    List<Reserva> reservaFinalizada = new ArrayList<>();
     String notasReservas = "";
+    double precioTotalDeReserva; 
     //Pagina principal
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
@@ -235,7 +239,11 @@ public class App extends Application {
     }
 
     public void informacion(Stage segundoStage, datosApartamentos.Apartamento apt, LocalDate fechaLlegadaSeleccionada, LocalDate fechaSalidaSeleccionada, String personaSeleccionada) {
-        List<Reserva.Pasajero> datosPasajeros = new ArrayList<>();
+        List<DatosPasajero> datosPasajeros = new ArrayList<>();
+        //Calcular el precio y dia de quedada
+        int diasDiferencia = (int) ChronoUnit.DAYS.between(fechaLlegadaSeleccionada, fechaSalidaSeleccionada);
+        precioTotalDeReserva = diasDiferencia * apt.getPrecio();
+
         System.out.println("Se seleccionó el apartamento: " + apt.getNombreApartamento());
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(20));
@@ -346,14 +354,14 @@ public class App extends Application {
         Label precio = new Label("Precio de la Reserva");
         precio.setPrefWidth(260); 
         precio.setFont(Font.loadFont(Tinos, 22));
-        Label respuestaprecio = new Label(apt.getPrecio() + "€");
+        Label respuestaprecio = new Label(precioTotalDeReserva + "€");
         respuestaprecio.setFont(Font.loadFont(Tinos, 32));
         divInputPrecio.getChildren().addAll(precio,respuestaprecio);
 
         String[] partes = personaSeleccionada.split("");
         
         VBox contenidosDatosUsuario = new VBox(20);
-
+        contenidosDatosUsuario.getChildren().clear();
         //Lista de los datos de los pasajeros
         Button Siguiente = new Button("Siguiente");
         Button anterior = new Button("Anterior");
@@ -429,14 +437,13 @@ public class App extends Application {
             // Añadir todos los inputs al contenedor del pasajero
             divInputSexo.getChildren().addAll(sexo, respuestaSexo);
             contenedorPasajero.getChildren().addAll(tituloDatos, divInputNombre, divInputDocumentos, divInputFechaNacimiento, divInputSexo);
-            contenidosDatosUsuario.getChildren().addAll(contenedorPasajero, Siguiente);
-            LocalDate fechaNacimientoDate = respuestafecha.getValue();
+            contenidosDatosUsuario.getChildren().add(contenedorPasajero);
             //guardar los datos 
-            datosPasajeros.add(new Reserva.Pasajero(respuestanombre.getText(), respuestadoc.getText(), fechaNacimientoDate.toString(), respuestaSexo.getValue()));
+            datosPasajeros.add(new DatosPasajero(respuestanombre, respuestadoc, respuestafecha, respuestaSexo));
         }        
-        
+        contenidosDatosUsuario.getChildren().add(Siguiente);
         //Eventos de pagina 
-
+        List <Reserva.Pasajero> datosUsuarios = new ArrayList<>();
         //Cuando elegir siguiente
         Siguiente.setOnAction(event -> {
             contenidosDatosUsuario.getChildren().clear();
@@ -444,16 +451,23 @@ public class App extends Application {
             // anterior.setVisible(true);
             // finalizar.setVisible(true);
             System.out.println("Datos ingresados por el usuario:");
+            
             for (int i = 0; i < Integer.parseInt(partes[0]); i++) {
                 // Obtener los datos de cada pasajero desde la lista de campos
-                Reserva.Pasajero datos = datosPasajeros.get(i);
-             
+                DatosPasajero datos = datosPasajeros.get(i);
+                
+                String nombrePasajeroString = datos.respuestanombre.getText();
+                String documentoPasajerotring = datos.respuestadoc.getText();
+                String fechaNacimientoPasajerotring = datos.respuestafecha.getValue().toString();
+                String sexoPasajerotring = datos.respuestaSexo.getValue();
+                Reserva.Pasajero datoUsuarioIntroduciodo = new Reserva.Pasajero(nombrePasajeroString, documentoPasajerotring, fechaNacimientoPasajerotring, sexoPasajerotring);
+                datosUsuarios.add(datoUsuarioIntroduciodo);
                 // Imprimir los datos del pasajero
                 System.out.println("Pasajero " + (i + 1) + ":");
-                System.out.println("  Nombre: " + datos.getNombre());
-                System.out.println("  Documento: " + datos.getDocumento());
-                System.out.println("  Fecha de Nacimiento: " + datos.getFechaNacimiento());
-                System.out.println("  Sexo: " + datos.getSexo());
+                System.out.println("  Nombre: " + datos.respuestanombre.getText());
+                System.out.println("  Documento: " + datos.respuestadoc.getText());
+                System.out.println("  Fecha de Nacimiento: " + datos.respuestafecha.getValue().toString());
+                System.out.println("  Sexo: " + datos.respuestaSexo.getValue());
                 VBox contenedorPasajero = new VBox(20);
                 // Título del pasajero
                 Label tituloDatos = new Label("Datos de Pasajero " + (i + 1));
@@ -464,7 +478,7 @@ public class App extends Application {
                 Label nombre = new Label("Nombre y Apellido");
                 nombre.setPrefWidth(254);
                 nombre.setFont(Font.loadFont(Tinos, 22));
-                Label respuestanombre = new Label(datos.getNombre());
+                Label respuestanombre = new Label(datos.respuestanombre.getText());
                 respuestanombre.setFont(Font.loadFont(Tinos, 22));
                 divInputNombre.getChildren().addAll(nombre, respuestanombre);
             
@@ -473,7 +487,7 @@ public class App extends Application {
                 Label documentos = new Label("Documento de Identidad");
                 documentos.setPrefWidth(254);
                 documentos.setFont(Font.loadFont(Tinos, 22));
-                Label respuestadoc = new Label(datos.getDocumento());
+                Label respuestadoc = new Label(datos.respuestafecha.getValue().toString());
                 respuestadoc.setFont(Font.loadFont(Tinos, 22));
                 divInputDocumentos.getChildren().addAll(documentos, respuestadoc);
             
@@ -482,7 +496,7 @@ public class App extends Application {
                 Label fechaNac = new Label("Fecha de Nacimiento");
                 fechaNac.setPrefWidth(254); // Cambié `fecha` a `fechaNac` para evitar error
                 fechaNac.setFont(Font.loadFont(Tinos, 22));
-                Label respuestafecha = new Label(datos.getFechaNacimiento());
+                Label respuestafecha = new Label(datos.respuestafecha.getValue().toString());
                 respuestafecha.setPrefWidth(333);
                 respuestafecha.setPrefHeight(22);
                 respuestafecha.setStyle("-fx-font-size: 22px; -fx-font-family: Tinos;");
@@ -493,13 +507,18 @@ public class App extends Application {
                 Label sexo = new Label("Sexo");
                 sexo.setPrefWidth(254);
                 sexo.setFont(Font.loadFont(Tinos, 22));
-                Label respuestaSexo = new Label(datos.getSexo());
+                Label respuestaSexo = new Label(datos.respuestaSexo.getValue());
                 respuestaSexo.setFont(Font.loadFont(Tinos, 22));
                 divInputSexo.getChildren().addAll(sexo, respuestaSexo);
                 contenedorPasajero.getChildren().addAll(tituloDatos, divInputNombre, divInputDocumentos, divInputFechaNacimiento, divInputSexo);
                 contenidosDatosUsuario.getChildren().addAll(contenedorPasajero);
             }
 
+
+            System.out.println("Los datos insertados:");
+            for (Reserva.Pasajero usuario : datosUsuarios) {
+                System.out.println(usuario.imprimirDatos());
+            }
             Label opcionesTitulo = new Label("Otras Opciones");
             opcionesTitulo.setFont(Font.loadFont(GideonRoman, 32));
 
@@ -560,13 +579,13 @@ public class App extends Application {
             VBox divInputNota = new VBox(10);
             Label notaLabel = new Label("Nota:");
             notaLabel.setFont(Font.loadFont(Tinos, 22));
-            TextArea notaArea = new TextArea();
+            notaArea = new TextArea();
             notaArea.setPromptText("¿Alergias? ¿Medicamentos?...");
             notaArea.setFont(Font.loadFont(Tinos, 22));
-            notaArea.setPrefRowCount(5); 
-            notasReservas = notaArea.getText();
+            notaArea.setPrefRowCount(5);
+
             divInputNota.getChildren().addAll(notaLabel, notaArea);
-           
+         
             HBox botonesBox = new HBox(10);
             botonesBox.getChildren().addAll(anterior,finalizar);
             // Agregar todo al VBox principal
@@ -579,7 +598,7 @@ public class App extends Application {
             );
         });
         
-        //Cuando elegir antes
+        //Cuando elegir antes //CAMBIAR LOS CODIGOS
         anterior.setOnAction(event -> {
             datosPasajeros.clear();
             contenidosDatosUsuario.getChildren().clear();
@@ -634,23 +653,28 @@ public class App extends Application {
                 // Añadir todos los inputs al contenedor del pasajero
                 divInputSexo.getChildren().addAll(sexo, respuestaSexo);
                 contenedorPasajero.getChildren().addAll(tituloDatos, divInputNombre, divInputDocumentos, divInputFechaNacimiento, divInputSexo);
-                contenidosDatosUsuario.getChildren().addAll(contenedorPasajero, Siguiente);
-    
+               
+                contenidosDatosUsuario.getChildren().add(contenedorPasajero);
                 //guardar los datos 
                 // datosPasajeros.add(new DatosPasajero(respuestanombre, respuestadoc, respuestafecha, respuestaSexo));
             }        
-        });
+         contenidosDatosUsuario.getChildren().add(Siguiente);
         
+        });
+         
         //Cuando termina la consulta
         finalizar.setOnAction(event -> {
+            notasReservas = notaArea.getText();
+         
             // Limpiar los datos visuales previos
             contenidosDatosUsuario.getChildren().clear();
             VBox contenidoParte1 = new VBox(10);
             VBox contenidoParte2 = new VBox(10);
             // Imprimir los datos de los pasajeros
             System.out.println("Datos ingresados por el usuario:");
-            for (int i = 0; i < datosPasajeros.size(); i++) {
-                Reserva.Pasajero datos = datosPasajeros.get(i);
+            
+            for (int i = 0; i < datosUsuarios.size(); i++) {
+                Reserva.Pasajero datos = datosUsuarios.get(i);
         
                 // Mostrar los datos del pasajero en la consola
                 System.out.println("Pasajero " + (i + 1) + ":");
@@ -724,7 +748,7 @@ public class App extends Application {
             VBox divInputNota = new VBox(10);
             Label notaLabel = new Label("Nota:");
             notaLabel.setFont(Font.loadFont(Tinos, 22));
-            Label notaArea = new Label(notasReservas + "");
+            Label notaArea = new Label(notasReservas);
             notaArea.setFont(Font.loadFont(Tinos, 22));
             divInputNota.getChildren().addAll(notaLabel, notaArea);
             
@@ -740,12 +764,11 @@ public class App extends Application {
             downloandPDFButton.setStyle(botoString);
             downloandPDFButton.setAlignment(Pos.CENTER);
             contenidosDatosUsuario.getChildren().addAll(downloandPDFButton);
-            Reserva reservaFinalizada = new Reserva(userId, datosPasajeros, matriculas, apt.getIdapartamento(), notasReservas);
+            Reserva reservaFinalizada = new Reserva(userId, datosUsuarios, matriculas, apt.getIdapartamento(), notasReservas, fechaLlegadaSeleccionada.toString(), fechaSalidaSeleccionada.toString(), precioTotalDeReserva, apt.getNombreApartamento());
             System.out.println("Reserva creada con todos los datos: " + reservaFinalizada);
             downloandPDFButton.setOnAction(e -> {
-                
                 DescargaPDF pdfDescargaPDF = new DescargaPDF();
-                pdfDescargaPDF.generarPDF("reserva" + userId + ".pdf", reservaFinalizada);
+                pdfDescargaPDF.generarPDF("reserva.pdf", reservaFinalizada);
                 
             });
         });

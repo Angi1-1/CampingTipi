@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 
 public class Reserva {
@@ -6,17 +7,24 @@ public class Reserva {
     private List<String> matriculas;
     private int apartamento;
     private String nota;
-
-    public Reserva(int id, List<Pasajero> pasajeros, List<String> matriculas, int apartamento,String nota ){
+    private String fechaLlegada;
+    private String fechaSalida;
+    private double precio;
+    private String nombreApartamento;
+    public Reserva(int id, List<Pasajero> pasajeros, List<String> matriculas, int apartamento, String nota, String fechaLlegada, String fechaSalida, double precio, String nombreApartamento) {
         this.id = id;
         this.pasajeros = pasajeros;
         this.matriculas = matriculas;
         this.apartamento = apartamento;
         this.nota = nota;
+        this.fechaLlegada = fechaLlegada;
+        this.fechaSalida = fechaSalida;
+        this.precio = precio;
+        this.nombreApartamento = nombreApartamento;
     }
 
-      // Getters y setters
-      public int getId() {
+    // Getters y setters
+    public int getId() {
         return id;
     }
 
@@ -55,11 +63,51 @@ public class Reserva {
     public void setNota(String nota) {
         this.nota = nota;
     }
-
-     public static class Pasajero {
+    public String getFechaLlegada() {
+        return fechaLlegada;
+    }
+    public String getFechaSalida() {
+        return fechaSalida;
+    }
+    public double getPrecio(){
+        return precio;
+    }
+    
+    public String imprimirReservas() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Numero de reserva: ").append(id).append("\n");
+        sb.append("Su fecha de llegada y salida: ").append(fechaLlegada).append(" - ").append(fechaSalida).append("\n");
+        sb.append("Numero de pasajeros: ").append(pasajeros.size()).append("\n");
+        sb.append("Precio de la reserva: ").append(precio).append("€").append("\n");
+        sb.append("Datos de los pasajeros reservados: ").append("\n");
+        sb.append("Apartamento: ").append(nombreApartamento).append("\n");
+    
+        // Recorre los pasajeros y añade su número
+        for (int i = 0; i < pasajeros.size(); i++) {
+            sb.append("Pasajero ").append(i + 1).append(":\n")
+              .append(pasajeros.get(i).imprimirDatos()) // Usa el método imprimirDatos() de Pasajero
+              .append("\n");
+        }
+    
+        // Añade las matrículas con el formato "Vehículo X: matrícula"
+        if (matriculas != null && !matriculas.isEmpty()) {
+            sb.append("Vehículos reservados: \n");
+            for (int i = 0; i < matriculas.size(); i++) {
+                sb.append("Vehículo ").append(i + 1).append(": ").append(matriculas.get(i)).append("\n");
+            }
+        } else {
+            sb.append("No se han reservado vehículos.\n");
+        }
+    
+        sb.append("Nota: ").append(nota).append("\n");
+        return sb.toString();
+    }
+    
+    
+    public static class Pasajero {
         private String nombre;
         private String documento;
-        private String fechaNacimiento;
+        private String fechaNacimiento; // Cambiado a LocalDate
         private String sexo;
 
         public Pasajero(String nombre, String documento, String fechaNacimiento, String sexo) {
@@ -87,7 +135,6 @@ public class Reserva {
         }
 
         public String getFechaNacimiento() {
-
             return fechaNacimiento;
         }
 
@@ -102,5 +149,16 @@ public class Reserva {
         public void setSexo(String sexo) {
             this.sexo = sexo;
         }
+
+
+
+        public String imprimirDatos() {
+            return "Nombre: " + nombre + "\n" +
+                   "Documento: " + documento + "\n" +
+                   "Fecha de Nacimiento: " + fechaNacimiento + "\n" +
+                   "Sexo: " + sexo;
+        }
+        
+
     }
 }
