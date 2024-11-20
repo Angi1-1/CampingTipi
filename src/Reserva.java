@@ -72,7 +72,7 @@ public class Reserva {
     public double getPrecio(){
         return precio;
     }
-    
+   
     public String imprimirReservas() {
         StringBuilder sb = new StringBuilder();
         sb.append("Numero de reserva: ").append(id).append("\n");
@@ -151,7 +151,7 @@ public class Reserva {
         }
 
 
-
+        
         public String imprimirDatos() {
             return "Nombre: " + nombre + "\n" +
                    "Documento: " + documento + "\n" +

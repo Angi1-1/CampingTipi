@@ -1,9 +1,8 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-
-
-import javafx.application.Application;
+import javafx.scene.Parent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import java.io.IOException;
 
 public class PaginaReserva{
     private List<datosApartamentos.Apartamento> Busqueda(String fechaLlegadaSeleccionada, String fechaSalidaSeleccionada, String numeroDePersonas) {
@@ -70,7 +70,13 @@ public class PaginaReserva{
     double precioTotalDeReserva; 
     
      public void mostrarPaginaReserva(Stage primaryStage) {
+        try {
+        //Cargar el header desde el archivo FXML
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainScene.fxml"));
+
+        Parent header = loader.load();
         BorderPane root = new BorderPane();
+        root.setTop(header); 
         primaryStage.setTitle("Tiendas y Fechas Disponibles");
         // Crear título
         Label mensajeError = new Label("");
@@ -251,6 +257,10 @@ public class PaginaReserva{
         Scene scene = new Scene(root, 1440, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }catch(IOException e){
+        e.printStackTrace();
+        System.err.println("Error al abrir la página de reserva: " + e.getMessage());
+    }
     }
      public void informacion(Stage segundoStage, datosApartamentos.Apartamento apt, LocalDate fechaLlegadaSeleccionada, LocalDate fechaSalidaSeleccionada, String personaSeleccionada) {
         List<DatosPasajero> datosPasajeros = new ArrayList<>();
@@ -601,7 +611,7 @@ public class PaginaReserva{
             divInputNota.getChildren().addAll(notaLabel, notaArea);
          
             HBox botonesBox = new HBox(10);
-            botonesBox.getChildren().addAll(anterior,finalizar);
+            botonesBox.getChildren().addAll(finalizar);
             // Agregar todo al VBox principal
             contenidosDatosUsuario.getChildren().addAll(
                 opcionesTitulo,
@@ -613,68 +623,68 @@ public class PaginaReserva{
         });
         
         //Cuando elegir antes //CAMBIAR LOS CODIGOS
-        anterior.setOnAction(event -> {
-            datosPasajeros.clear();
-            contenidosDatosUsuario.getChildren().clear();
-            for (int i = 1; i <= Integer.parseInt(partes[0]); i++) { 
-                VBox contenedorPasajero = new VBox(20);
-                // Título del pasajero
-                Label tituloDatos = new Label("Datos de Pasajero " + i);
-                tituloDatos.setFont(Font.loadFont(GideonRoman, 32));
+
+        // anterior.setOnAction(event -> {
             
-                // Input Nombre y Apellido
-                HBox divInputNombre = new HBox(20);
-                Label nombre = new Label("Nombre y Apellido");
-                nombre.setPrefWidth(254);
-                nombre.setFont(Font.loadFont(Tinos, 22));
-                TextField respuestanombre = new TextField();
-                respuestanombre.setFont(Font.loadFont(Tinos, 22));
-                respuestanombre.setPrefWidth(333);
-                respuestanombre.setPrefHeight(22);
-                divInputNombre.getChildren().addAll(nombre, respuestanombre);
+        //     contenidosDatosUsuario.getChildren().clear();
+        //     // for (int i = 1; i <= Integer.parseInt(partes[0]); i++) { 
+        //     for (int i = 1; i <= Integer.parseInt(partes[0]); i++) { 
+        //         VBox contenedorPasajero = new VBox(20);
+        //         // Título del pasajero
+        //         Label tituloDatos = new Label("Datos de Pasajero " + i);
+        //         tituloDatos.setFont(Font.loadFont(GideonRoman, 32));
             
-                // Input Documento de Identidad
-                HBox divInputDocumentos = new HBox(20);
-                Label documentos = new Label("Documento de Identidad");
-                documentos.setPrefWidth(254);
-                documentos.setFont(Font.loadFont(Tinos, 22));
-                TextField respuestadoc = new TextField();
-                respuestadoc.setFont(Font.loadFont(Tinos, 22));
-                respuestadoc.setPrefWidth(333);
-                respuestadoc.setPrefHeight(22);
-                divInputDocumentos.getChildren().addAll(documentos, respuestadoc);
+        //         // Input Nombre y Apellido
+        //         HBox divInputNombre = new HBox(20);
+        //         Label nombre = new Label("Nombre y Apellido");
+        //         nombre.setPrefWidth(254);
+        //         nombre.setFont(Font.loadFont(Tinos, 22));
+        //         TextField respuestanombre = new TextField();
+        //         respuestanombre.setFont(Font.loadFont(Tinos, 22));
+        //         respuestanombre.setPrefWidth(333);
+        //         respuestanombre.setPrefHeight(22);
+        //         divInputNombre.getChildren().addAll(nombre, respuestanombre);
             
-                // Input Fecha de Nacimiento
-                HBox divInputFechaNacimiento = new HBox(20);
-                Label fechaNac = new Label("Fecha de Nacimiento");
-                fechaNac.setPrefWidth(254); // Cambié `fecha` a `fechaNac` para evitar error
-                fechaNac.setFont(Font.loadFont(Tinos, 22));
-                DatePicker respuestafecha = new DatePicker();
-                respuestafecha.setPrefWidth(333);
-                respuestafecha.setPrefHeight(22);
-                respuestafecha.setStyle("-fx-font-size: 22px; -fx-font-family: Tinos;");
-                divInputFechaNacimiento.getChildren().addAll(fechaNac, respuestafecha);
+        //         // Input Documento de Identidad
+        //         HBox divInputDocumentos = new HBox(20);
+        //         Label documentos = new Label("Documento de Identidad");
+        //         documentos.setPrefWidth(254);
+        //         documentos.setFont(Font.loadFont(Tinos, 22));
+        //         TextField respuestadoc = new TextField();
+        //         respuestadoc.setFont(Font.loadFont(Tinos, 22));
+        //         respuestadoc.setPrefWidth(333);
+        //         respuestadoc.setPrefHeight(22);
+        //         divInputDocumentos.getChildren().addAll(documentos, respuestadoc);
             
-                // Input Sexo
-                HBox divInputSexo = new HBox(20);
-                Label sexo = new Label("Sexo");
-                sexo.setPrefWidth(254);
-                sexo.setFont(Font.loadFont(Tinos, 22));
-                ComboBox<String> respuestaSexo = new ComboBox<>();
-                respuestaSexo.getItems().addAll("Hombre", "Mujer");
-                respuestaSexo.setPromptText("Selecionar sexo");
-                respuestaSexo.setStyle("-fx-font-size:22px;-fx-pref-height: 18px; -fx-pref-width: 333px; -fx-background-color:#ffff");
-                // Añadir todos los inputs al contenedor del pasajero
-                divInputSexo.getChildren().addAll(sexo, respuestaSexo);
-                contenedorPasajero.getChildren().addAll(tituloDatos, divInputNombre, divInputDocumentos, divInputFechaNacimiento, divInputSexo);
+        //         // Input Fecha de Nacimiento
+        //         HBox divInputFechaNacimiento = new HBox(20);
+        //         Label fechaNac = new Label("Fecha de Nacimiento");
+        //         fechaNac.setPrefWidth(254); // Cambié `fecha` a `fechaNac` para evitar error
+        //         fechaNac.setFont(Font.loadFont(Tinos, 22));
+        //         DatePicker respuestafecha = new DatePicker();
+        //         respuestafecha.setPrefWidth(333);
+        //         respuestafecha.setPrefHeight(22);
+        //         respuestafecha.setStyle("-fx-font-size: 22px; -fx-font-family: Tinos;");
+        //         divInputFechaNacimiento.getChildren().addAll(fechaNac, respuestafecha);
+            
+        //         // Input Sexo
+        //         HBox divInputSexo = new HBox(20);
+        //         Label sexo = new Label("Sexo");
+        //         sexo.setPrefWidth(254);
+        //         sexo.setFont(Font.loadFont(Tinos, 22));
+        //         ComboBox<String> respuestaSexo = new ComboBox<>();
+        //         respuestaSexo.getItems().addAll("Hombre", "Mujer");
+        //         respuestaSexo.setPromptText("Selecionar sexo");
+        //         respuestaSexo.setStyle("-fx-font-size:22px;-fx-pref-height: 18px; -fx-pref-width: 333px; -fx-background-color:#ffff");
+        //         // Añadir todos los inputs al contenedor del pasajero
+        //         divInputSexo.getChildren().addAll(sexo, respuestaSexo);
+        //         contenedorPasajero.getChildren().addAll(tituloDatos, divInputNombre, divInputDocumentos, divInputFechaNacimiento, divInputSexo);
                
-                contenidosDatosUsuario.getChildren().add(contenedorPasajero);
-                //guardar los datos 
-                // datosPasajeros.add(new DatosPasajero(respuestanombre, respuestadoc, respuestafecha, respuestaSexo));
-            }        
-         contenidosDatosUsuario.getChildren().add(Siguiente);
+        //         contenidosDatosUsuario.getChildren().add(contenedorPasajero);
+        //     }        
+        //  contenidosDatosUsuario.getChildren().add(Siguiente);
         
-        });
+        // });
          
         //Cuando termina la consulta
         finalizar.setOnAction(event -> {
@@ -780,11 +790,11 @@ public class PaginaReserva{
             contenidosDatosUsuario.getChildren().addAll(downloandPDFButton);
             Reserva reservaFinalizada = new Reserva(userId, datosUsuarios, matriculas, apt.getIdapartamento(), notasReservas, fechaLlegadaSeleccionada.toString(), fechaSalidaSeleccionada.toString(), precioTotalDeReserva, apt.getNombreApartamento());
             System.out.println("Reserva creada con todos los datos: " + reservaFinalizada);
-            downloandPDFButton.setOnAction(e -> {
-                DescargaPDF pdfDescargaPDF = new DescargaPDF();
+             DescargaPDF pdfDescargaPDF = new DescargaPDF();
+             downloandPDFButton.setOnAction(e -> {
                 pdfDescargaPDF.generarPDF("reserva.pdf", reservaFinalizada);
-                
             });
+            pdfDescargaPDF.guardarReserva("reservaDatos.txt",reservaFinalizada);
         });
         rightSection.getChildren().addAll(reservaTitulo,divInputFecha,divInputPasajero,divInputPrecio, contenidosDatosUsuario); 
         HBox contenidoRellenar = new HBox(10);

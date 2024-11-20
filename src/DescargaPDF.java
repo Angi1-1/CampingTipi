@@ -3,7 +3,9 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class DescargaPDF {
@@ -29,4 +31,23 @@ public class DescargaPDF {
             System.out.println("Documento cerrado.");
         }
     }
+
+    public void guardarReserva(String archivo, Reserva reserva) {
+        System.out.println("Realiza la reserva" + archivo + reserva.imprimirReservas());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
+            // Escribe los datos generales de la reserva
+            writer.write("{" + reserva.getId() + "," 
+                             + reserva.getFechaLlegada() + ","
+                             + reserva.getFechaSalida()+","
+                             + reserva.getApartamento()+","
+                             + reserva.getPrecio()+ "}");
+            writer.newLine();
+           
+            System.out.println("Datos de la reserva guardados correctamente en " + archivo);
+        } catch (IOException e) {
+            System.err.println("Error al guardar los datos de la reserva: " + e.getMessage());
+        }
+    }
+    
+    
 }
