@@ -30,7 +30,11 @@ public class App extends Application {
         }
     }
 
+
     public static void main(String[] args) {
+        conexionJava.inicializarBaseDeDatos();
+        datosApartamentos.datosApartamentosInsertar();
+        //insertar datos de prueba
+        conexionJava.insertarUsuario("12345678A", "admin@gmail.com", "1234", "admin", "600600600", "12/07/2001", "calle tajo", "Madrid", "28019");
         launch(args);
-    }
-}
+    }}

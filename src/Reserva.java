@@ -1,6 +1,14 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.List;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 public class Reserva {
     private int id;
     private List<Pasajero> pasajeros;
@@ -11,6 +19,40 @@ public class Reserva {
     private String fechaSalida;
     private double precio;
     private String nombreApartamento;
+    private static final String URL_WITH_DB = "jdbc:mysql://localhost:3306/CampingTipi?serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
+    public static void insertDatosReservas(int idUsuario, int AlojamientoId, String fechaLlegada, String fechaSalida, double precio,List<Pasajero> pasajeros, List<String> matriculas, String nota) {
+         try (Connection conn = DriverManager.getConnection(URL_WITH_DB, USER, PASSWORD)) {
+
+            //List<Pasajero> pasajeros, List<String> matriculas sea una string
+              // Convertir las listas en cadenas delimitadas
+              String pasajerosStr = pasajeros.stream()
+            .map(p -> p.getNombre() + "-" + p.getDocumento()) // Convertir cada Pasajero en un String
+            .reduce((p1, p2) -> p1 + "," + p2) // Concatenar con coma
+            .orElse(""); // Si la lista está vacía, usar cadena vacía
+            String matriculasStr = String.join(",", matriculas); // Convierte la lista de matrículas a una cadena
+
+
+            String query = "INSERT INTO reserva (UsuarioId, AlojamientoId, FechaLlegada, FechaSalida, Precio, Pasajeros, Matriculas, Nota) " +
+                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, idUsuario);     
+            pstmt.setInt(2, AlojamientoId);         
+            pstmt.setString(3, fechaLlegada);    
+            pstmt.setString(4, fechaSalida);     
+            pstmt.setDouble(5, precio);      
+            pstmt.setString(6, pasajerosStr);    
+            pstmt.setString(7, matriculasStr);     
+            pstmt.setString(8, nota); 
+            // Ejecutar la consulta
+            pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Reserva(int id, List<Pasajero> pasajeros, List<String> matriculas, int apartamento, String nota, String fechaLlegada, String fechaSalida, double precio, String nombreApartamento) {
         this.id = id;
         this.pasajeros = pasajeros;
