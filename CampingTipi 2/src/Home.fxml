@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="900.0" prefHeight="1400.0" prefWidth="817.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="396.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/FONDO%20DE%20HOME.png" />
+         </image>
+      </ImageView>
+      <Text fill="WHITE" layoutX="482.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Camping Tipi" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="45.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="482.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¿A donde vas de vacaciones?">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="272.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Camping y Glamping en Camping Tipi" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Text>
+      <GridPane hgap="2.0" layoutY="414.0" minHeight="230.0" prefWidth="900.0" vgap="2.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fitHeight="223.0" fitWidth="241.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@imagenes/Apartados%20(2).png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="212.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@imagenes/Apartados%20(1).png" />
+               </image>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fitHeight="237.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@imagenes/Apartados.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ImageView>
+         </children>
+      </GridPane>
+      <ScrollBar fx:id="scrollbarhome" layoutX="886.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="1400.0" prefWidth="14.0" translateZ="10.0" />
+      <Text layoutX="352.0" layoutY="677.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Todo lo que ofrecemos" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="367.0" layoutY="712.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Servicios">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Text>
+      <GridPane fx:id="GridPanelUno" layoutX="-4.0" layoutY="765.0" prefHeight="212.0" prefWidth="908.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="449.0" minWidth="10.0" prefWidth="399.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="516.0" minWidth="10.0" prefWidth="509.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fitHeight="223.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" scaleX="1.3" scaleY="1.2" scaleZ="1.1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@imagenes/istockphoto-1532511962-612x612.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="TextSliderUno" strokeType="OUTSIDE" strokeWidth="0.0" text="Sala de fiestas equipada con la mejor tecnología electrónica en sonido y luces para las veladas del Camping Tipi" textAlignment="CENTER" wrappingWidth="320.443359375" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets top="70.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <GridPane hgap="20.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" vgap="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" text="500 m&lt;sup&gt;2&lt;/sup&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="50 Personas" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Button mnemonicParsing="false" text="2 Alturas" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+               </children>
+               <GridPane.margin>
+                  <Insets top="-70.0" />
+               </GridPane.margin>
+            </GridPane>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bruma Space" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </GridPane>
+      <GridPane fx:id="GridPanelDos" layoutX="-908.0" layoutY="755.0" prefHeight="212.0" prefWidth="908.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="449.0" minWidth="10.0" prefWidth="399.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="516.0" minWidth="10.0" prefWidth="509.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <ImageView fitHeight="223.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" scaleX="1.3" scaleY="1.2" scaleZ="1.1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@imagenes/istockphoto-1532511962-612x612%20(2).png" />
+               </image>
+            </ImageView>
+            <GridPane hgap="20.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" vgap="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" text="700 m&lt;sup&gt;2&lt;/sup&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="80 Personas" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Button mnemonicParsing="false" text="Ocio" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+               </children>
+               <GridPane.margin>
+                  <Insets top="-70.0" />
+               </GridPane.margin>
+            </GridPane>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Aqua Zone" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </GridPane>
+      <GridPane fx:id="GridPanelTres" layoutX="-908.0" layoutY="755.0" prefHeight="212.0" prefWidth="908.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="449.0" minWidth="10.0" prefWidth="399.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="516.0" minWidth="10.0" prefWidth="509.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <ImageView fitHeight="223.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" scaleX="1.3" scaleY="1.2" scaleZ="1.1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@imagenes/istockphoto-1532511962-612x612%20(3).png" />
+               </image>
+            </ImageView>
+            <GridPane hgap="20.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" vgap="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" text="25 m&lt;sup&gt;2&lt;/sup&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="2 Personas" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Button mnemonicParsing="false" text="3m altura" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+               </children>
+               <GridPane.margin>
+                  <Insets top="-70.0" />
+               </GridPane.margin>
+            </GridPane>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bell" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </GridPane>
+      <Pane layoutY="1039.0" prefHeight="329.0" prefWidth="890.0" style="-fx-background-color: #D8E2C1;">
+         <children>
+            <Text layoutX="362.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Servicios" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font>
+            </Text>
+            <GridPane alignment="CENTER" hgap="20.0" layoutX="44.0" layoutY="49.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="802.0" vgap="30.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="400.0" minHeight="17.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="111.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@iconos/carpa-para-camping.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </GridPane>
+         </children>
+      </Pane>
+   </children>
+</Pane>
