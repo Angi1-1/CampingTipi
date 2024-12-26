@@ -11,7 +11,8 @@ public class MainSceneController {
 
     @FXML
     private Button bHeadReserva; // Anotar con @FXML para que sea inicializado automáticamente
-
+    @FXML
+    private Button bHeadMcuenta; 
     @FXML
     void btnOKClicked(ActionEvent event) {
         Stage mainWindow = (Stage) tfTitle.getScene().getWindow();
@@ -27,6 +28,13 @@ public class MainSceneController {
         } else {
             System.out.println("bHeadReserva no fue inicializado. Verifica el fx:id en el FXML.");
         }
+         // Vincular el botón "Inicio" con la acción
+        if (bHeadMcuenta != null) { // Verificar que no sea null
+            bHeadMcuenta.setOnAction(event -> abrirLogin());
+        } else {
+            System.out.println("bHeadCuenta no fue inicializado. Verifica el fx:id en el FXML.");
+        }
+        
     }
 
     // Método para abrir la página de reserva
@@ -34,5 +42,11 @@ public class MainSceneController {
         Stage stage = new Stage(); 
         PaginaReserva paginaReserva = new PaginaReserva();
         paginaReserva.mostrarPaginaReserva(stage);
+    }
+
+    private void abrirLogin () {
+        Stage stage = new Stage();
+        Login pLogin = new Login();
+        pLogin.mostrarLogin(stage);
     }
 }
