@@ -10,6 +10,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -66,7 +69,7 @@ public class Login extends Application {
             sinCuenta.setOnAction(event -> {
                 Stage stage = new Stage(); 
                 RegistrarCuentas registrarCuentas = new RegistrarCuentas();
-                registrarCuentas.registrar(stage);
+                registrarCuentas.start(stage);
                 primaryStage.close();
             });
 
@@ -110,7 +113,7 @@ public class Login extends Application {
                 String email = respuestaEmail.getText().trim();
                 String password = passwordField.getText().trim();
                 if (email.isEmpty() || password.isEmpty()) {
-                    mensaje.setText("No dejes campo vacio");
+                    mensaje.setText("Debes completar todos los campos.");
                     mensaje.setStyle(" -fx-wrap-text: true; -fx-text-fill: red;");
                     return;
                 }
@@ -160,12 +163,13 @@ public class Login extends Application {
     }
 
     private boolean VerificarLogin (String email, String password){
+        String hashedPassword = hashPassword(password); // Método para cifrar la contraseña
         String query = "SELECT * FROM Usuario WHERE Usuario = ? AND Password = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             PreparedStatement pstmt = conn.prepareStatement(query)) {
             
             pstmt.setString(1, email);
-            pstmt.setString(2, password);
+            pstmt.setString(2, hashedPassword);
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 return rs.next(); // Si existe al menos un registro, las credenciales son válidas
@@ -175,4 +179,20 @@ public class Login extends Application {
         }
         return false; // Credenciales inválidas
     }
+
+    // Método para cifrar la contraseña (SHA-256)
+    private String hashPassword(String password) {
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hashedBytes = md.digest(password.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashedBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+        return null;
+    }
+}
 }
