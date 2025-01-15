@@ -117,11 +117,20 @@ public class Login extends Application {
                     mensaje.setStyle(" -fx-wrap-text: true; -fx-text-fill: red;");
                     return;
                 }
-
-                if (VerificarLogin(email, password)) {
+                int idUsuario = VerificarLogin(email, password);
+                if (idUsuario != -1) {
                     mensaje.setText("Inicio de sesión correcto.");
                     mensaje.setStyle("-fx-wrap-text: true; -fx-text-fill: green;");
                     //Si es correcto lleva a pagina personal
+                    Stage stage = new Stage();
+                    PerfilUser datosUser = new PerfilUser();
+                    try {
+                        datosUser.setidUsuario(idUsuario);
+                        datosUser.start(stage);
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                    primaryStage.close();
                 } else {
                     mensaje.setText("Credenciales inválidas.");
                     mensaje.setStyle("-fx-wrap-text: true; -fx-text-fill: red;");
@@ -162,7 +171,8 @@ public class Login extends Application {
         }
     }
 
-    private boolean VerificarLogin (String email, String password){
+    private int VerificarLogin (String email, String password){
+        int idUsuario = -1;
         String hashedPassword = hashPassword(password); // Método para cifrar la contraseña
         String query = "SELECT * FROM Usuario WHERE Usuario = ? AND Password = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
@@ -172,12 +182,15 @@ public class Login extends Application {
             pstmt.setString(2, hashedPassword);
             
             try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next(); // Si existe al menos un registro, las credenciales son válidas
+                if(rs.next()){
+                    idUsuario = rs.getInt("id"); // Si existe al menos un registro, las credenciales son válidas
+                }
+               
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false; // Credenciales inválidas
+        return idUsuario; // Credenciales inválidas
     }
 
     // Método para cifrar la contraseña (SHA-256)

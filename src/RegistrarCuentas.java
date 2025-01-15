@@ -277,6 +277,11 @@ public class RegistrarCuentas extends Application {
                         respuestaPostal.clear();
                         checkBox.setSelected(false);
                         // Volver a pagina login y cierra
+                        Stage stage = new Stage();
+                        Login loginEntrar = new Login();
+                        loginEntrar.start(stage);
+                        primaryStage.close();
+
                     }
 
                 } catch (Exception e) {
