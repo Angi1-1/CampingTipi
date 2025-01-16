@@ -4,6 +4,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,6 +32,27 @@ public class DescargaPDF {
             System.out.println("Documento cerrado.");
         }
     }
+    public static byte[] generarPDFMysql(String filename, Reserva reserva) {
+        System.out.println("Recibido: " + filename);
+        Document document = new Document();
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, byteArrayOutputStream);
+            document.open();
+            
+            reserva.getApartamento();
+            // Información básica
+            document.add(new Paragraph("Detalles de la Reserva"));
+            document.add(new Paragraph(reserva.imprimirReservas()));
+            System.out.println("Documento creado con éxito.");
+            document.close(); 
+            return byteArrayOutputStream.toByteArray();
+        } catch (DocumentException e) {
+            System.err.println("Error al generar el PDF: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public void guardarReserva(String archivo, Reserva reserva) {
         System.out.println("Realiza la reserva" + archivo + reserva.imprimirReservas());
@@ -49,5 +71,6 @@ public class DescargaPDF {
         }
     }
     
+
     
 }

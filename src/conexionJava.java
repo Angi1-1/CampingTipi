@@ -3,7 +3,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Date;
 
 public class conexionJava {
     private static final String URL = "jdbc:mysql://localhost:3306?serverTimezone=UTC";
@@ -80,6 +79,8 @@ public class conexionJava {
             e.printStackTrace();
         } 
     }
+    
+    //Funcion para insertar datos de apartamentos
     public static void insertartDatosApartamentos(String nombre, int stock, double espacio, double altura, int personas, double precio, int desayuno, String descripcion, String imagen){
         try (Connection conn = DriverManager.getConnection(URL_WITH_DB, USER, PASSWORD)) {
             String checkQuerry = "SELECT COUNT(*) FROM Alojamiento WHERE Nombre = ? AND Desayuno = ?";
@@ -109,7 +110,8 @@ public class conexionJava {
             e.printStackTrace();
         }
     }
-
+    
+    //Funcion para insertar datos de usuario
     public static void insertarUsuario (String dni, String usuario, String password, String NombreApellido, String Telefono, String fechaNacimiento, String calle, String ciudad, String CodigoPostal) {
         try(Connection conn = DriverManager.getConnection(URL_WITH_DB, USER, PASSWORD)){
             String checkQuerry = "SELECT COUNT(*) FROM usuario WHERE Usuario = ? AND DNI = ?";

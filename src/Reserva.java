@@ -22,7 +22,7 @@ public class Reserva {
     private static final String URL_WITH_DB = "jdbc:mysql://localhost:3306/CampingTipi?serverTimezone=UTC";
     private static final String USER = "root";
     private static final String PASSWORD = "";
-    public static void insertDatosReservas(int idUsuario, int AlojamientoId, String fechaLlegada, String fechaSalida, double precio,List<Pasajero> pasajeros, List<String> matriculas, String nota) {
+    public static void insertDatosReservas(int idUsuario, int AlojamientoId, String fechaLlegada, String fechaSalida, double precio,List<Pasajero> pasajeros, List<String> matriculas, String nota, byte[] archivoPDF) {
          try (Connection conn = DriverManager.getConnection(URL_WITH_DB, USER, PASSWORD)) {
 
             //List<Pasajero> pasajeros, List<String> matriculas sea una string
@@ -34,8 +34,8 @@ public class Reserva {
             String matriculasStr = String.join(",", matriculas); // Convierte la lista de matrículas a una cadena
 
 
-            String query = "INSERT INTO reserva (UsuarioId, AlojamientoId, FechaLlegada, FechaSalida, Precio, Pasajeros, Matriculas, Nota) " +
-                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO reserva (UsuarioId, AlojamientoId, FechaLlegada, FechaSalida, Precio, Pasajeros, Matriculas, Nota, PDF) " +
+                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1, idUsuario);     
             pstmt.setInt(2, AlojamientoId);         
@@ -45,6 +45,7 @@ public class Reserva {
             pstmt.setString(6, pasajerosStr);    
             pstmt.setString(7, matriculasStr);     
             pstmt.setString(8, nota); 
+            pstmt.setBytes(9, archivoPDF);
             // Ejecutar la consulta
             pstmt.executeUpdate();
 

@@ -510,7 +510,7 @@ public class PaginaReserva{
                 Label documentos = new Label("Documento de Identidad");
                 documentos.setPrefWidth(254);
                 documentos.setFont(Font.loadFont(Tinos, 22));
-                Label respuestadoc = new Label(datos.respuestafecha.getValue().toString());
+                Label respuestadoc = new Label(datos.respuestadoc.getText());
                 respuestadoc.setFont(Font.loadFont(Tinos, 22));
                 divInputDocumentos.getChildren().addAll(documentos, respuestadoc);
             
@@ -723,10 +723,11 @@ public class PaginaReserva{
             downloandPDFButton.setStyle(botoString);
             downloandPDFButton.setAlignment(Pos.CENTER);
             contenidosDatosUsuario.getChildren().addAll(downloandPDFButton);
-            Reserva reservaFinalizada = new Reserva(userId, datosUsuarios, matriculas, apt.getIdapartamento(), notasReservas, fechaLlegadaSeleccionada.toString(), fechaSalidaSeleccionada.toString(), precioTotalDeReserva, apt.getNombreApartamento());
-            Reserva.insertDatosReservas(userId, apt.getIdapartamento(), fechaLlegadaSeleccionada.toString(), fechaSalidaSeleccionada.toString(), precioTotalDeReserva,datosUsuarios, matriculas, notasReservas);
-            System.out.println("Reserva creada con todos los datos: " + reservaFinalizada);
             DescargaPDF pdfDescargaPDF = new DescargaPDF();
+            Reserva reservaFinalizada = new Reserva(userId, datosUsuarios, matriculas, apt.getIdapartamento(), notasReservas, fechaLlegadaSeleccionada.toString(), fechaSalidaSeleccionada.toString(), precioTotalDeReserva, apt.getNombreApartamento());
+            byte [] archivoPDF = DescargaPDF.generarPDFMysql("reserva.pdf", reservaFinalizada);
+            Reserva.insertDatosReservas(userId, apt.getIdapartamento(), fechaLlegadaSeleccionada.toString(), fechaSalidaSeleccionada.toString(), precioTotalDeReserva,datosUsuarios, matriculas, notasReservas, archivoPDF);
+            System.out.println("Reserva creada con todos los datos: " + reservaFinalizada);
              downloandPDFButton.setOnAction(e -> {
                 pdfDescargaPDF.generarPDF("reserva.pdf", reservaFinalizada);
             });
