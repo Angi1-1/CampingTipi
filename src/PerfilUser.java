@@ -404,9 +404,7 @@ public class PerfilUser extends Application {
                 mensajerErrro.setStyle(" -fx-wrap-text: true; -fx-text-fill: green;");
             }
         });
-        btnGuardar.setOnAction(e -> {
-            cambioPasswordStage.close();
-        });
+       
 
         HBox botones = new HBox(5, btnGuardar, btncerrar);
         // Agregar los controles al layout
@@ -415,7 +413,11 @@ public class PerfilUser extends Application {
         // Configurar y mostrar la escena
         Scene scene = new Scene(layout, 500, 350);
         cambioPasswordStage.setScene(scene);
-        cambioPasswordStage.show();
+        cambioPasswordStage.show(); 
+        
+        btncerrar.setOnAction(e -> {
+            cambioPasswordStage.close();
+        });
     }
 
     private void actualizarPassword(String nuevaPassword) {
