@@ -5,8 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -22,7 +24,8 @@ public class PerfilUser extends Application {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/CampingTipi?serverTimezone=UTC";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
-    private int idUsuario;
+    private static int idUsuario;
+    private int numeroReservasRegistrado;
     private String correo;
     private String nombreApellido;
     private String telefono;
@@ -32,7 +35,7 @@ public class PerfilUser extends Application {
     private String fechaSalida;
     private int numeroReserva;
     private String nombreAlojamiento;
-    private byte[] reservaPdf;
+
 
     String Tinos = "file:src/fonts/Tinos/Tinos-Regular.ttf";
     String GideonRoman = "file:src/fonts/Gideon_Roman/GideonRoman-Regular.ttf";
@@ -41,9 +44,12 @@ public class PerfilUser extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("./MainScene.fxml"));
+        Parent headerprincipal = loader.load();
         primaryStage.setTitle("Mi Cuenta");
         BorderPane root = new BorderPane(); // Layout principal
-
+        root.setTop(headerprincipal);
         // Encabezado
         VBox header = new VBox(10);
         header.setAlignment(Pos.CENTER);
@@ -165,45 +171,72 @@ public class PerfilUser extends Application {
         lblReserva.setFont(Font.loadFont(Tinos, 44));
 
         // cuadro de reserva
+        VBox reservasBox = new VBox();
+        for (int i = 0; i<numeroReservasRegistrado ; i++) {
+            String query = "SELECT * FROM reserva WHERE UsuarioId = ? ORDER BY FechaLlegada ASC LIMIT 1 OFFSET ?;";
 
-        ImageView image = new ImageView("/iconos/reservaIconCmap.png");
-        image.setFitWidth(100);
-        image.setFitHeight(100);
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, idUsuario);
+            pstmt.setInt(2, i);
+            try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                byte[] reservaPdf = rs.getBytes("PDF");
+                ImageView image = new ImageView("/iconos/reservaIconCmap.png");
+                image.setFitWidth(100);
+                image.setFitHeight(100);
+                Label fechaReserva = new Label(rs.getString("FechaLlegada") + " - " + rs.getString("FechaSalida"));
+                fechaReserva.setFont(Font.loadFont(Tinos, 22));
+                Label idReserva = new Label("Nº" + rs.getInt("id"));    
+                idReserva.setFont(Font.loadFont(Tinos, 22));
+                Label tipoCamping = new Label(rs.getDouble("Precio") + "€");
+                tipoCamping.setFont(Font.loadFont(Tinos, 22));
+                VBox datosReserva = new VBox(5, fechaReserva, idReserva, tipoCamping);
 
-        Label fechaReserva = new Label(fechaEntrada + " - " + fechaSalida);
-        fechaReserva.setFont(Font.loadFont(Tinos, 22));
-        Label idReserva = new Label("Nº" + numeroReserva);
-        idReserva.setFont(Font.loadFont(Tinos, 22));
-        Label tipoCamping = new Label(nombreAlojamiento);
-        tipoCamping.setFont(Font.loadFont(Tinos, 22));
-        VBox datosReserva = new VBox(5, fechaReserva, idReserva, tipoCamping);
-
-        Button pdf = new Button("Ver Detalle");
-        pdf.setFont(Font.loadFont(Tinos, 16));
-        pdf.setPrefWidth(100);
-        pdf.setPrefHeight(41);
-        pdf.setStyle(
-                "-fx-background-color: black;" +
+                Button pdf = new Button("Ver Detalle");
+                pdf.setFont(Font.loadFont(Tinos, 16));
+                pdf.setPrefWidth(100);
+                pdf.setPrefHeight(41);
+                 pdf.setStyle(
+                        "-fx-background-color: black;" +
                         "-fx-text-fill: white;" +
                         "-fx-border-radius: 5;" +
                         "-fx-background-radius: 5;");
-        pdf.setOnAction(e -> {
-            if (reservaPdf != null) {
-                mostrarPDF(reservaPdf); // Llama al método con el byte[] del PDF
-            } else {
-                System.out.println("No hay datos PDF disponibles.");
-            }
-        });
-        HBox reserva = new HBox(10, image, datosReserva, pdf);
-        reserva.setStyle(
-                "-fx-border-radius: 5;" +
+                pdf.setOnAction(e -> {
+                    if (reservaPdf!= null) {
+                            mostrarPDF(reservaPdf); // Llama al método con el byte[] del PDF
+                    } else {
+                        System.out.println("No hay datos PDF disponibles.");
+                    }
+                });
+                HBox reserva = new HBox();
+                reserva.setSpacing(10);
+                reserva.getChildren().addAll(image, datosReserva, pdf);
+                reserva.setStyle(
+                        "-fx-border-radius: 5;" +
                         "-fx-padding: 16px 32px" +
                         "-fx-border: 1px solid black");
-        reserva.setAlignment(Pos.CENTER);
+                reserva.setAlignment(Pos.CENTER);
+                reservasBox.setSpacing(10);
+                reservasBox.getChildren().addAll(reserva);
+            } else {
+                 System.out.println("No se encontró información");
+            }
+            }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(reservasBox);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(false);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setPrefSize(500, 250);
         Label comentario = new Label("*Si desea cancelar la reserva, pon contacto con nosotros.");
         comentario.setFont(Font.loadFont(Tinos, 16));
-        VBox derecha = new VBox(34, lblReserva, reserva, comentario);
+        VBox derecha = new VBox(10, lblReserva, scrollPane, comentario);
         izquierda.setAlignment(Pos.CENTER);
         HBox contenidoTexto = new HBox(64, izquierda, derecha);
         contenidoTexto.setAlignment(Pos.CENTER);
@@ -213,8 +246,11 @@ public class PerfilUser extends Application {
         Scene scene = new Scene(root, 1440, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }catch (IOException e) {
+        e.printStackTrace(); // Muestra detalles del error en consola
+        System.err.println("Error al cargar el archivo FXML: " + e.getMessage());
     }
-
+    }
     private void habilitarEdicion(boolean habilitar, TextField respuestaNombre, TextField respuestaFecha, TextField respuestaCorreo, TextField respuestaTelefono) {
         // Habilitar o deshabilitar la edición en los campos
         respuestaNombre.setEditable(habilitar);
@@ -253,17 +289,19 @@ public class PerfilUser extends Application {
     }
 
     public void setidUsuario(int id) {
+        System.out.println("el id" + id);
         mostrarInformacionUser(id);
         this.idUsuario = id;
 
     }
 
     private void mostrarInformacionUser(int id) {
-        String query = "SELECT reserva.*, usuario.*, alojamiento.Nombre AS AlojamientoNombre \n" + //
-                "FROM reserva \n" + //
-                "JOIN usuario ON reserva.UsuarioId = usuario.id \n" + //
-                "JOIN alojamiento ON reserva.AlojamientoId = alojamiento.id \n" + //
-                "WHERE reserva.id = ?";
+        String query = "SELECT u.*, COUNT(r.id) AS total_reservas\r\n" + //
+                        "FROM usuario u\r\n" + //
+                        "LEFT JOIN reserva r ON u.id = r.UsuarioId\r\n" + //
+                        "WHERE u.id = ?\r\n" + //
+                        "GROUP BY u.id;\r\n" + //
+                        "";
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                 PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, id);
@@ -273,12 +311,7 @@ public class PerfilUser extends Application {
                     nombreApellido = rs.getString("NombreApellido");
                     telefono = rs.getString("Telefono");
                     fechaNacimiento = rs.getString("FechaNacimiento");
-
-                    fechaEntrada = rs.getString("FechaLlegada");
-                    fechaSalida = rs.getString("FechaSalida");
-                    numeroReserva = rs.getInt("id");
-                    nombreAlojamiento = rs.getString("AlojamientoNombre");
-                    reservaPdf = rs.getBytes("PDF");
+                    numeroReservasRegistrado = rs.getInt("total_reservas");
 
                 } else {
                     System.out.println("No se encontró información para el usuario con ID: " + id);

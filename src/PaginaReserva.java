@@ -38,7 +38,8 @@ public class PaginaReserva{
     String Tinos = "file:src/fonts/Tinos/Tinos-Regular.ttf";
     String GideonRoman ="file:src/fonts/Gideon_Roman/GideonRoman-Regular.ttf";
     private TextArea notaArea;
-    private Integer userId = 1;
+    PerfilUser usuario = new PerfilUser();
+    private Integer userId = Integer.valueOf(usuario.getIdUsuario());
     // Servicios que ofecemos
     private Map<String, String> createServicio(String nombre, String imagenUrl) {
         Map<String, String> servicio = new HashMap<>();
@@ -219,7 +220,14 @@ public class PaginaReserva{
                         busquedaBox.setGraphic(contentBox);
                         busquedaBox.setOnAction(item -> {
                             primaryStage.close();
-                            informacion(new Stage(), apt, fechaLlegadaSeleccionada, fechaSalidaSeleccionada, personaSeleccionada);
+                            System.out.println("valor de userId" +userId);
+                            if(userId == null || userId == 0){
+                                Login registrar = new Login();
+                                registrar.mostrarLogin(new Stage());
+                            }else {
+                                informacion(new Stage(), apt, fechaLlegadaSeleccionada, fechaSalidaSeleccionada, personaSeleccionada);
+                            }
+                            
                         });
                         resultadosContainer.getChildren().add(busquedaBox);
                     }
@@ -261,6 +269,7 @@ public class PaginaReserva{
         System.err.println("Error al abrir la página de reserva: " + e.getMessage());
     }
     }
+
      public void informacion(Stage segundoStage, datosApartamentos.Apartamento apt, LocalDate fechaLlegadaSeleccionada, LocalDate fechaSalidaSeleccionada, String personaSeleccionada) {
         List<DatosPasajero> datosPasajeros = new ArrayList<>();
         //Calcular el precio y dia de quedada
