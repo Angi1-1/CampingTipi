@@ -30,7 +30,14 @@ public class MainSceneController {
         }
          // Vincular el botón "Inicio" con la acción
         if (bHeadMcuenta != null) { // Verificar que no sea null
-            bHeadMcuenta.setOnAction(event -> abrirLogin());
+            PerfilUser usuario = new PerfilUser();
+            Integer userId = Integer.valueOf(usuario.getIdUsuario());
+            if(userId == null || userId == 0){
+                bHeadMcuenta.setOnAction(event -> abrirLogin());
+            }else {
+                bHeadMcuenta.setOnAction(event -> abrirPerfil(userId));
+            }
+           
         } else {
             System.out.println("bHeadCuenta no fue inicializado. Verifica el fx:id en el FXML.");
         }
@@ -48,5 +55,11 @@ public class MainSceneController {
         Stage stage = new Stage();
         Login pLogin = new Login();
         pLogin.mostrarLogin(stage);
+    }
+    private void abrirPerfil (Integer idUsuario) {
+        Stage stage = new Stage();
+        PerfilUser datosUser = new PerfilUser();
+        datosUser.setidUsuario(idUsuario);
+        datosUser.start(stage);
     }
 }
